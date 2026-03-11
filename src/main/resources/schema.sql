@@ -1,0 +1,1 @@
+-- TODO: Definir esquema de base de datos (bodega, producto, usuario, rol, movimiento, movimiento_detalle, stock_bodega, auditoria)
