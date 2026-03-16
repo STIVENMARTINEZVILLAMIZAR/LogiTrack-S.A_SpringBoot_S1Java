@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LogiTrack · Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-card">
+    <h1>LogiTrack</h1>
+    <p class="muted">Autenticación</p>
+    <label>Base URL</label>
+    <input id="baseUrl" value="http://localhost:8082" />
+    <label>Usuario</label>
+    <input id="user" autocomplete="username" />
+    <label>Contraseña</label>
+    <input id="pass" type="password" autocomplete="current-password" />
+    <div class="row">
+      <button class="primary" onclick="login()">Login</button>
+      <button class="ghost" onclick="register()">Registrar EMPLEADO</button>
+    </div>
+    <div id="msg" class="muted"></div>
+  </div>
+  <script src="js/auth.js"></script>
+</body>
+</html>

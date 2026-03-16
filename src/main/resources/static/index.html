@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LogiTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <h1>SSG LogiTrack</h1>
+    <div class="pill" id="tokenStatus">Sin sesión</div>
+  </header>
+
+  <div class="layout">
+    <div class="card">
+      <h3>Autenticación</h3>
+      <label>Base URL</label>
+      <input id="baseUrl" value="http://localhost:8082" />
+      <label>Usuario</label>
+      <input id="user" value="puto" />
+      <label>Contraseña</label>
+      <input id="pass" type="password" value="1" />
+      <button onclick="login()">Login</button>
+      <button style="margin-left:6px;" onclick="register()">Registrar EMPLEADO</button>
+      <div class="hint">Token vivo en memoria del navegador.</div>
+    </div>
+
+    <div class="card">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="bodegas" onclick="switchTab(event,'bodegas')">Bodegas</button>
+        <button class="tab-btn" data-tab="productos" onclick="switchTab(event,'productos')">Productos</button>
+        <button class="tab-btn" data-tab="movimientos" onclick="switchTab(event,'movimientos')">Movimientos</button>
+        <button class="tab-btn" data-tab="auditoria" onclick="switchTab(event,'auditoria')">Auditoría</button>
+      </div>
+
+      <div id="bodegas" class="tab-panel">
+        <button onclick="fetchJson('/bodegas')">Listar bodegas</button>
+        <pre id="bodegasOut"></pre>
+      </div>
+
+      <div id="productos" class="tab-panel" style="display:none">
+        <div class="inline">
+          <input id="umbral" type="number" value="10" />
+          <button onclick="fetchJson('/productos/stock-bajo?umbral='+document.getElementById('umbral').value)">Stock
+            bajo</button>
+          <button onclick="fetchJson('/productos')">Todos</button>
+        </div>
+        <pre id="productosOut"></pre>
+      </div>
+
+      <div id="movimientos" class="tab-panel" style="display:none">
+        <div class="inline">
+          <input id="movTipo" placeholder="tipo (ENTRADA/SALIDA/TRANSFERENCIA)" />
+          <input id="movDesde" placeholder="desde ISO (opcional)" />
+          <input id="movHasta" placeholder="hasta ISO (opcional)" />
+          <button onclick="filtrarMov()">Filtrar</button>
+        </div>
+        <pre id="movOut"></pre>
+      </div>
+
+      <div id="auditoria" class="tab-panel" style="display:none">
+        <div class="inline">
+          <input id="audUser" type="number" placeholder="usuarioId" />
+          <input id="audAccion" placeholder="accion (INSERT/UPDATE/DELETE/LOGIN/LOGOUT)" />
+          <button onclick="filtrarAud()">Filtrar</button>
+        </div>
+        <pre id="audOut"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/function.js"></script>
+</body>
+
+</html>
