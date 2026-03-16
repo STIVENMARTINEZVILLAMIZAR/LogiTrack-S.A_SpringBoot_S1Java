@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LogiTrack | App</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+<header>
+  <h1>SSG LogiTrack</h1>
+  <div class="pill" id="tokenStatus">Sesión</div>
+  <button class="ghost" onclick="logout()">Salir</button>
+</header>
+
+<div class="layout">
+  <div class="card" style="min-width:260px">
+    <h3>Conexión</h3>
+    <label>Base URL</label>
+    <input id="baseUrl" value="http://localhost:8080" onchange="guardarBaseUrl()"/>
+    <p class="muted">El token ya está en memoria.</p>
+  </div>
+
+  <div class="card grow">
+    <div class="tabs">
+      <button class="tab active" data-tab="bodegas" onclick="switchTab('bodegas')">Bodegas</button>
+      <button class="tab" data-tab="productos" onclick="switchTab('productos')">Productos</button>
+      <button class="tab" data-tab="movimientos" onclick="switchTab('movimientos')">Movimientos</button>
+      <button class="tab" data-tab="auditoria" onclick="switchTab('auditoria')">Auditoría</button>
+    </div>
+
+    <div id="bodegas" class="tab-content active">
+      <button class="primary" onclick="filtrarBodegas()">Listar</button>
+      <div id="outBodegas" class="output"></div>
+    </div>
+
+    <div id="productos" class="tab-content">
+      <button class="primary" onclick="filtrarProductos()">Listar</button>
+      <div id="outProductos" class="output"></div>
+    </div>
+
+    <div id="movimientos" class="tab-content">
+      <label>Desde</label><input type="date" id="movDesde"/>
+      <label>Hasta</label><input type="date" id="movHasta"/>
+      <button class="primary" onclick="filtrarMovimientos()">Filtrar</button>
+      <div id="outMov" class="output"></div>
+    </div>
+
+    <div id="auditoria" class="tab-content">
+      <input id="audUser" placeholder="usuarioId"/>
+      <input id="audAccion" placeholder="accion (INSERT/UPDATE/DELETE/LOGIN/LOGOUT)"/>
+      <button class="primary" onclick="filtrarAuditoria()">Filtrar</button>
+      <div id="outAudit" class="output"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
