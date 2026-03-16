@@ -2,6 +2,10 @@
 
 Backend Spring Boot para gestión y auditoría de bodegas con autenticación JWT, auditoría de cambios y documentación Swagger.
 
+<p align="center">
+<img src="https://img.shields.io/badge/Java-17-orange?logo=java&logoColor=white"/> <img src="https://img.shields.io/badge/MySQL-8.0.45-blue?logo=mysql&logoColor=white"/> <img src="https://img.shields.io/badge/Maven-4.0.0-C71A36?logo=apache-maven&logoColor=white"/> <img src="https://img.shields.io/badge/Editor-VSCode-007ACC?logo=visualstudiocode&logoColor=white"/> <img src="https://img.shields.io/badge/github-repo-blue?logo=github"/><img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=Spring&logoColor=white"/> 
+</p>
+
 ## Requisitos
 - Java 17
 - Maven 3.9+
