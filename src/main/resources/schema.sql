@@ -104,8 +104,13 @@ CREATE TABLE IF NOT EXISTS auditoria (
     CONSTRAINT fk_aud_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DROP INDEX IF EXISTS idx_usuario_email ON usuario;
 CREATE INDEX idx_usuario_email ON usuario(email);
+DROP INDEX IF EXISTS idx_bodega_nombre ON bodega;
 CREATE INDEX idx_bodega_nombre ON bodega(nombre);
+DROP INDEX IF EXISTS idx_producto_nombre ON producto;
 CREATE INDEX idx_producto_nombre ON producto(nombre);
+DROP INDEX IF EXISTS idx_mov_fecha ON movimiento;
 CREATE INDEX idx_mov_fecha ON movimiento(fecha);
+DROP INDEX IF EXISTS idx_aud_fecha ON auditoria;
 CREATE INDEX idx_aud_fecha ON auditoria(fecha);
