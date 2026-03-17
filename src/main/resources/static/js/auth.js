@@ -2,7 +2,7 @@ const statusEl = document.getElementById('authStatus');
 const baseInput = document.getElementById('baseUrl');
 
 document.addEventListener('DOMContentLoaded', () => {
-  const savedBase = localStorage.getItem('baseUrl') || 'http://localhost:8082';
+  const savedBase = localStorage.getItem('baseUrl') || 'http://localhost:8080';
   baseInput.value = savedBase;
   document.getElementById('username').focus();
 });

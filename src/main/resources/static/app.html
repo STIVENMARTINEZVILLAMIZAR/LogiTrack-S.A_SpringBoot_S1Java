@@ -3,58 +3,109 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LogiTrack | App</title>
+  <title>LogiTrack | Panel</title>
   <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
-<header>
-  <h1>SSG LogiTrack</h1>
-  <div class="pill" id="tokenStatus">Sesión</div>
-  <button class="ghost" onclick="logout()">Salir</button>
-</header>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">📦</div>
+        <div>
+          <div class="brand-name">LogiTrack</div>
+          <div class="brand-sub">Gestión de inventario</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-tab="bodegas" onclick="switchTab('bodegas')">Bodegas</button>
+        <button class="nav-item" data-tab="productos" onclick="switchTab('productos')">Productos</button>
+        <button class="nav-item" data-tab="movimientos" onclick="switchTab('movimientos')">Movimientos</button>
+        <button class="nav-item" data-tab="auditoria" onclick="switchTab('auditoria')">Auditoría</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="pill" id="tokenStatus">Sesión</div>
+        <button class="ghost" onclick="logout()">Salir</button>
+      </div>
+    </aside>
 
-<div class="layout">
-  <div class="card" style="min-width:260px">
-    <h3>Conexión</h3>
-    <label>Base URL</label>
-    <input id="baseUrl" value="http://localhost:8080" onchange="guardarBaseUrl()"/>
-    <p class="muted">El token ya está en memoria.</p>
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <label class="label-inline">Base URL</label>
+          <input id="baseUrl" class="input-inline" value="http://localhost:8080" onchange="guardarBaseUrl()"/>
+        </div>
+        <div class="topbar-right">
+          <span class="muted">Usuario:</span>
+          <span id="userLabel" class="pill">-</span>
+        </div>
+      </header>
+
+      <section class="content">
+        <div id="bodegas" class="tab-content active">
+          <div class="card card-flat">
+            <div class="card-header">
+              <h3>Bodegas</h3>
+              <div class="card-actions">
+                <button class="primary" onclick="filtrarBodegas()">Actualizar</button>
+              </div>
+            </div>
+            <div id="outBodegas" class="output"></div>
+          </div>
+        </div>
+
+        <div id="productos" class="tab-content">
+          <div class="card card-flat">
+            <div class="card-header">
+              <h3>Productos</h3>
+              <div class="card-actions">
+                <button class="primary" onclick="filtrarProductos()">Actualizar</button>
+                <button class="ghost" onclick="filtrarStockBajo()">Stock bajo</button>
+              </div>
+            </div>
+            <div id="outProductos" class="output"></div>
+          </div>
+        </div>
+
+        <div id="movimientos" class="tab-content">
+          <div class="card card-flat">
+            <div class="card-header">
+              <h3>Movimientos</h3>
+              <div class="card-actions">
+                <label class="label-inline">Desde</label>
+                <input type="date" id="movDesde" class="input-inline"/>
+                <label class="label-inline">Hasta</label>
+                <input type="date" id="movHasta" class="input-inline"/>
+                <button class="primary" onclick="filtrarMovimientos()">Filtrar</button>
+              </div>
+            </div>
+            <div id="outMov" class="output"></div>
+          </div>
+        </div>
+
+        <div id="auditoria" class="tab-content">
+          <div class="card card-flat">
+            <div class="card-header">
+              <h3>Auditoría</h3>
+              <div class="card-actions">
+                <input id="audUser" class="input-inline" placeholder="Usuario ID" />
+                <input id="audAccion" class="input-inline" placeholder="Acción (INSERT/UPDATE/...)"/>
+                <button class="primary" onclick="filtrarAuditoria()">Filtrar</button>
+              </div>
+            </div>
+            <div id="outAudit" class="output"></div>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <div class="card grow">
-    <div class="tabs">
-      <button class="tab active" data-tab="bodegas" onclick="switchTab('bodegas')">Bodegas</button>
-      <button class="tab" data-tab="productos" onclick="switchTab('productos')">Productos</button>
-      <button class="tab" data-tab="movimientos" onclick="switchTab('movimientos')">Movimientos</button>
-      <button class="tab" data-tab="auditoria" onclick="switchTab('auditoria')">Auditoría</button>
-    </div>
+  <template id="tableTemplate">
+    <table class="data-table">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </template>
 
-    <div id="bodegas" class="tab-content active">
-      <button class="primary" onclick="filtrarBodegas()">Listar</button>
-      <div id="outBodegas" class="output"></div>
-    </div>
-
-    <div id="productos" class="tab-content">
-      <button class="primary" onclick="filtrarProductos()">Listar</button>
-      <div id="outProductos" class="output"></div>
-    </div>
-
-    <div id="movimientos" class="tab-content">
-      <label>Desde</label><input type="date" id="movDesde"/>
-      <label>Hasta</label><input type="date" id="movHasta"/>
-      <button class="primary" onclick="filtrarMovimientos()">Filtrar</button>
-      <div id="outMov" class="output"></div>
-    </div>
-
-    <div id="auditoria" class="tab-content">
-      <input id="audUser" placeholder="usuarioId"/>
-      <input id="audAccion" placeholder="accion (INSERT/UPDATE/DELETE/LOGIN/LOGOUT)"/>
-      <button class="primary" onclick="filtrarAuditoria()">Filtrar</button>
-      <div id="outAudit" class="output"></div>
-    </div>
-  </div>
-</div>
-
-<script src="js/app.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

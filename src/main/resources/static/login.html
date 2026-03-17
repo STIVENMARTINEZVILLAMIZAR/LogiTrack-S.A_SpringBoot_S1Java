@@ -8,24 +8,29 @@
 </head>
 <body class="auth-body">
   <div class="auth-card">
-    <h2 class="auth-title">SSG LogiTrack</h2>
-    <p class="auth-subtitle">Accede con tu usuario o registra un empleado.</p>
+    <div class="auth-brand">
+      <div class="logo">📦</div>
+      <div>
+        <h2 class="auth-title">LogiTrack</h2>
+        <p class="auth-subtitle">Accede con tu usuario o registra un empleado.</p>
+      </div>
+    </div>
 
     <label for="baseUrl">Base URL</label>
-    <input id="baseUrl" type="text" value="http://localhost:8081" autocomplete="off"/>
+    <input id="baseUrl" type="text" value="http://localhost:8080" autocomplete="off"/>
 
     <label for="username">Usuario</label>
-    <input id="username" type="text" autocomplete="admin"/>
+    <input id="username" type="text" autocomplete="username"/>
 
     <label for="password">Contraseña</label>
-    <input id="password" type="password" autocomplete="admin"/>
+    <input id="password" type="password" autocomplete="current-password"/>
 
     <div class="row">
       <button class="primary" onclick="login()">Login</button>
-      <button class="ghost" onclick="register()">Registrar empleado</button>
+      <button class="ghost" onclick="register()">Registrar</button>
     </div>
 
-    <p class="muted">El token queda guardado en memoria del navegador.</p>
+    <p class="muted">El token queda guardado en el navegador.</p>
     <div id="authStatus" class="status-line"></div>
   </div>
 
