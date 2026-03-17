@@ -9,7 +9,10 @@
 <body class="auth-body">
   <div class="auth-card">
     <div class="auth-brand">
-      <div class="logo">📦</div>
+      <div class="logo">
+        <img src="img/logo.png" alt="LogiTrack logo" onerror="this.style.display='none'"/>
+        <span class="logo-fallback">LT</span>
+      </div>
       <div>
         <h2 class="auth-title">LogiTrack</h2>
         <p class="auth-subtitle">Accede con tu usuario o registra un empleado.</p>
@@ -32,6 +35,7 @@
 
     <p class="muted">El token queda guardado en el navegador.</p>
     <p class="muted">Registro solo disponible para administradores desde el panel.</p>
+    <p class="helper-text">Admin por defecto: <code>admin</code> / <code>password</code> (cámbialo en <code>application.properties</code>).</p>
     <div id="authStatus" class="status-line"></div>
   </div>
 

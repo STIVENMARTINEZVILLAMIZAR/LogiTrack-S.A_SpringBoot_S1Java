@@ -22,9 +22,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        boolean enabled = Boolean.TRUE.equals(usuario.getHabilitado());
         return new User(
                 usuario.getUsername(),
                 usuario.getPasswordHash(),
+                enabled,
+                true,
+                true,
+                true,
                 usuario.getRoles().stream()
                         .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getNombre()))
                         .collect(Collectors.toSet())

@@ -10,12 +10,14 @@ const loginRoleEl = document.getElementById('loginRole');
 
 document.addEventListener('DOMContentLoaded', () => {
   const origin = window.location.origin;
-  const savedBase = localStorage.getItem('baseUrl') || defaultBaseUrl();
-  baseInput.value = savedBase;
-  if (origin && origin !== 'null') {
+  const savedBase = localStorage.getItem('baseUrl');
+  if (savedBase) {
+    baseInput.value = savedBase;
+  } else if (origin && origin !== 'null') {
     baseInput.value = origin;
-    baseInput.readOnly = true;
     localStorage.setItem('baseUrl', origin);
+  } else {
+    baseInput.value = defaultBaseUrl();
   }
   document.getElementById('username').focus();
   applyLoginRoleHint();
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function defaultBaseUrl() {
   const origin = window.location.origin;
   if (origin && origin !== 'null') return origin;
-  return 'http://localhost:8087';
+  return 'http://localhost:8080';
 }
 
 function applyLoginRoleHint() {
@@ -103,7 +105,9 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
 }
 
 function guardarBaseUrl() {
-  localStorage.setItem('baseUrl', baseInput.value.trim());
+  const clean = baseInput.value.trim().replace(/\/+$/, '');
+  baseInput.value = clean;
+  localStorage.setItem('baseUrl', clean);
 }
 
 function openRegisterModal() {

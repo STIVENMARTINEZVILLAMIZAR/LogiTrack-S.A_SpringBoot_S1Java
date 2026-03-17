@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+import java.time.Instant;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +44,8 @@ public class AuthServiceImpl implements AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
         Usuario usuario = usuarioRepository.findByUsername(request.username())
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        usuario.setUltimoLogin(Instant.now());
+        usuarioRepository.save(usuario);
         String token = generarToken(usuario);
         auditoriaService.registrar("usuario", usuario.getId(), AccionAuditoria.LOGIN, usuario.getId(), null, Map.of("username", usuario.getUsername()), null, null);
         return new AuthResponse(token, jwtService.extractClaim(token, claims -> claims.getExpiration().getTime() - claims.getIssuedAt().getTime()));
