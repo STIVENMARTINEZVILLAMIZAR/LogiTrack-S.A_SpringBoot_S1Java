@@ -191,11 +191,49 @@ function formatDate(value) {
   return date.toLocaleString('es-CO');
 }
 
+function summarizeObject(obj) {
+  if (!obj || typeof obj !== 'object') return null;
+  const parts = [];
+  if (obj.nombre) parts.push(obj.nombre);
+  if (obj.apellido) parts.push(obj.apellido);
+  const fullName = parts.join(' ');
+  if (obj.username) return fullName ? `${fullName} (${obj.username})` : obj.username;
+  if (fullName) return fullName;
+  if (obj.email) return obj.email;
+  if (obj.id !== undefined && obj.id !== null) return `#${obj.id}`;
+  return null;
+}
+
+function summarizeValue(value) {
+  if (value === null || value === undefined) return '-';
+  if (typeof value === 'boolean') return value ? 'Sí' : 'No';
+  if (typeof value === 'number') return value.toString();
+  if (Array.isArray(value)) return `${value.length} items`;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        const summary = summarizeValue(parsed);
+        if (summary && summary !== '[object Object]') return summary;
+      } catch (e) {
+        return value;
+      }
+    }
+    return value;
+  }
+  if (typeof value === 'object') {
+    const summary = summarizeObject(value);
+    return summary || 'Objeto';
+  }
+  return String(value);
+}
+
 function formatValue(value) {
   if (value === null || value === undefined) return '-';
   if (typeof value === 'boolean') return value ? 'Sí' : 'No';
   if (typeof value === 'number') return value.toString();
-  if (typeof value === 'object') return JSON.stringify(value, null, 0);
+  if (typeof value === 'object') return summarizeValue(value);
   return String(value);
 }
 
@@ -237,7 +275,19 @@ function renderGeneric(el, data) {
     const row = document.createElement('tr');
     columns.forEach(col => {
       const td = document.createElement('td');
-      td.textContent = formatValue(item[col]);
+      const value = item[col];
+      const text = summarizeValue(value);
+      let fullText = '';
+      if (typeof value === 'object' && value !== null) {
+        fullText = JSON.stringify(value);
+      } else if (typeof value === 'string') {
+        fullText = value;
+      }
+      if (fullText && fullText.length > 0) td.title = fullText;
+      if (typeof text === 'string' && text.length > 36) {
+        td.classList.add('truncate-text');
+      }
+      td.textContent = text;
       row.appendChild(td);
     });
     tbody.appendChild(row);

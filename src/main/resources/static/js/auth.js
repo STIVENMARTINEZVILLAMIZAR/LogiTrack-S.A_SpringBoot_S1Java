@@ -32,7 +32,7 @@ function defaultBaseUrl() {
 function applyLoginRoleHint() {
   if (!loginRoleEl) return;
   const params = new URLSearchParams(window.location.search);
-  const role = params.get('role');
+  const role = params.get('role') || document.body.dataset.role || '';
   if (role === 'ADMIN') {
     loginRoleEl.textContent = 'Modo: Administrador';
   } else if (role === 'EMPLEADO') {

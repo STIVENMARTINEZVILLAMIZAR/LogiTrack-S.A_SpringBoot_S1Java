@@ -1,4 +1,3 @@
--- Seed de datos mínimos para desarrollo/demo
 
 -- Roles
 INSERT INTO rol (nombre, descripcion) VALUES

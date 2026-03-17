@@ -4,29 +4,75 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LogiTrack | Bienvenida</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles.css"/>
 </head>
-<body class="welcome-body">
-  <div class="welcome-card">
-    <div class="welcome-badge">
-      <div class="logo float">
-        <img src="img/logo.png" alt="LogiTrack logo" onerror="this.style.display='none'"/>
-        <span class="logo-fallback">LT</span>
+<body class="welcome-body relative overflow-hidden">
+  <div class="grid-layer"></div>
+  <div class="beam-layer"></div>
+  <div class="vignette-layer"></div>
+  <div class="noise-layer"></div>
+
+  <div class="welcome-shell">
+    <div class="welcome-hero">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <div class="logo float">
+            <img src="img/logo.png" alt="LogiTrack logo" onerror="this.style.display='none'"/>
+          </div>
+          <div>
+            <h1>LogiTrack</h1>
+            <p class="muted">Sistema de gestion de inventario y bodegas.</p>
+          </div>
+        </div>
+
+        <h2 class="hero-title">LOGITRACK</h2>
+        <p class="hero-copy">
+          Administra tu inventario con precisión digital. Control total de bodegas, productos y movimientos en un solo lugar, con analítica en tiempo real y auditoría automática.
+        </p>
+
+        <div class="hero-list">
+          <div class="hero-item">
+            <strong>Administrador</strong>
+            <span>Configura bodegas, crea usuarios y define roles.</span>
+          </div>
+          <div class="hero-item">
+            <strong>Empleado</strong>
+            <span>Consulta inventario y registra operaciones asignadas.</span>
+          </div>
+        </div>
       </div>
-      <div>
-        <h1>Bienvenido a LogiTrack</h1>
-        <p class="muted">¿Cómo deseas iniciar sesión?</p>
+
+      <div class="hero-right">
+        <div class="hero-card">
+          <div class="hero-card-title">Elige tu modo</div>
+          <div class="hero-card-sub">Selecciona el rol con el que vas a entrar.</div>
+          <div class="hero-actions">
+            <a class="primary" href="login-admin.html">Ingresar como Administrador</a>
+            <a class="ghost" href="login-empleado.html">Ingresar como Empleado</a>
+          </div>
+          <div class="hero-note">El administrador crea usuarios y asigna roles.</div>
+        </div>
       </div>
     </div>
 
-    <div class="welcome-actions">
-      <a class="primary" href="login.html?role=ADMIN">Ingresar como Administrador</a>
-      <a class="ghost" href="login.html?role=EMPLEADO">Ingresar como Empleado</a>
-    </div>
-
-    <div class="welcome-note">
-      <div class="pill subtle">El administrador crea usuarios y asigna roles.</div>
-    </div>
+    <section class="logo-strip">
+      <div class="partner-kicker">Trusted by industry giants</div>
+      <div class="logo-marquee">
+      
+        <div class="logo-track" aria-hidden="true">
+          <img src="./img/logo_cajasan.png" alt="Cajsan" class="partner-logo" onerror="this.style.display='none'"/>
+          <img src="./img/logo_campuslands.png" alt="Campsulands" class="partner-logo" onerror="this.style.display='none'"/>
+          <img src="./img/springboot.png" alt="Spring Boot" class="partner-logo" onerror="this.style.display='none'"/>
+          
+        </div>
+      </div>
+    </section>
   </div>
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2023 LogiTrack. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 </body>
 </html>

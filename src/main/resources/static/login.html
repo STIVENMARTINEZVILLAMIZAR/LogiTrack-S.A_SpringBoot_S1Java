@@ -4,19 +4,34 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LogiTrack | Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles.css"/>
 </head>
-<body class="auth-body">
+<body class="auth-body relative overflow-hidden" data-role="GENERAL">
+  <div class="grid-layer"></div>
+  <div class="beam-layer"></div>
+  <div class="vignette-layer"></div>
+  <div class="noise-layer"></div>
+  <div class="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full bg-sky-300/40 blur-3xl animate-pulse"></div>
+  <div class="pointer-events-none absolute top-20 right-0 h-[24rem] w-[24rem] rounded-full bg-amber-300/30 blur-[80px] animate-pulse"></div>
+  <div class="pointer-events-none absolute -bottom-40 left-1/3 h-[28rem] w-[28rem] rounded-full bg-emerald-300/25 blur-[90px] animate-pulse"></div>
   <div class="auth-card">
     <div class="auth-brand">
       <div class="logo">
         <img src="img/logo.png" alt="LogiTrack logo" onerror="this.style.display='none'"/>
-        <span class="logo-fallback">LT</span>
       </div>
       <div>
         <h2 class="auth-title">LogiTrack</h2>
         <p class="auth-subtitle">Accede con tu usuario o registra un empleado.</p>
         <div id="loginRole" class="pill subtle" style="margin-top: 8px;">Modo: Acceso general</div>
+      </div>
+    </div>
+
+    <div class="role-switch">
+      <div class="switch-title">Elige tu acceso</div>
+      <div class="switch-actions">
+        <a class="primary" href="login-admin.html">Administrador</a>
+        <a class="ghost" href="login-empleado.html">Empleado</a>
       </div>
     </div>
 
