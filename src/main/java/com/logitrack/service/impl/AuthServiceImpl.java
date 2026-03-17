@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,8 +56,9 @@ public class AuthServiceImpl implements AuthService {
         if (usuarioRepository.existsByUsername(request.username())) {
             throw new IllegalArgumentException("Usuario ya registrado");
         }
-        Rol rolEmpleado = rolRepository.findByNombre("EMPLEADO")
-                .orElseGet(() -> rolRepository.save(Rol.builder().nombre("EMPLEADO").descripcion("Rol por defecto").build()));
+        String rolNombre = normalizarRol(request.rol());
+        Rol rolEmpleado = rolRepository.findByNombre(rolNombre)
+                .orElseGet(() -> rolRepository.save(Rol.builder().nombre(rolNombre).descripcion("Rol " + rolNombre.toLowerCase(Locale.ROOT)).build()));
 
         Usuario usuario = Usuario.builder()
                 .nombre(request.nombre())
@@ -64,8 +66,8 @@ public class AuthServiceImpl implements AuthService {
                 .username(request.username())
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password()))
-                .roles(Set.of(rolEmpleado))
                 .build();
+        usuario.getRoles().add(rolEmpleado);
         usuarioRepository.save(usuario);
         String token = generarToken(usuario);
         auditoriaService.registrar("usuario", usuario.getId(), AccionAuditoria.INSERT, usuario.getId(), null, Map.of("username", usuario.getUsername()), null, null);
@@ -77,5 +79,19 @@ public class AuthServiceImpl implements AuthService {
         User userDetails = new User(usuario.getUsername(), usuario.getPasswordHash(),
                 roles.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r)).collect(Collectors.toSet()));
         return jwtService.generateToken(userDetails, Map.of("roles", roles));
+    }
+
+    private String normalizarRol(String rol) {
+        if (rol == null) {
+            return "EMPLEADO";
+        }
+        String value = rol.trim().toUpperCase(Locale.ROOT);
+        if (value.isEmpty()) {
+            return "EMPLEADO";
+        }
+        if (!value.equals("ADMIN") && !value.equals("EMPLEADO")) {
+            throw new IllegalArgumentException("Rol invalido");
+        }
+        return value;
     }
 }

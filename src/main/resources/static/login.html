@@ -17,7 +17,7 @@
     </div>
 
     <label for="baseUrl">Base URL</label>
-    <input id="baseUrl" type="text" value="http://localhost:8080" autocomplete="off"/>
+    <input id="baseUrl" type="text" value="http://localhost:8083" autocomplete="off"/>
 
     <label for="username">Usuario</label>
     <input id="username" type="text" autocomplete="username"/>
@@ -27,11 +27,56 @@
 
     <div class="row">
       <button class="primary" onclick="login()">Login</button>
-      <button class="ghost" onclick="register()">Registrar</button>
+      <button class="ghost" onclick="openRegisterModal()">Registrar</button>
     </div>
 
     <p class="muted">El token queda guardado en el navegador.</p>
     <div id="authStatus" class="status-line"></div>
+  </div>
+
+  <div id="registerModal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeRegisterModal()"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="registerTitle">
+      <form id="registerForm" class="modal-card" onsubmit="submitRegister(event)">
+        <div class="modal-header">
+          <div>
+            <h3 id="registerTitle">Registrar usuario</h3>
+            <p class="muted">Completa los datos del empleado.</p>
+          </div>
+          <button type="button" class="icon-btn" onclick="closeRegisterModal()">X</button>
+        </div>
+
+        <div class="modal-body">
+          <label for="regNombre">Nombres</label>
+          <input id="regNombre" type="text" autocomplete="given-name" required />
+
+          <label for="regApellido">Apellidos</label>
+          <input id="regApellido" type="text" autocomplete="family-name" required />
+
+          <label for="regEmail">Email</label>
+          <input id="regEmail" type="email" autocomplete="email" required />
+
+          <label for="regUsername">Usuario</label>
+          <input id="regUsername" type="text" autocomplete="username" required />
+
+          <label for="regPassword">Contraseña</label>
+          <input id="regPassword" type="password" autocomplete="new-password" required />
+
+          <label for="regRol">Rol</label>
+          <select id="regRol">
+            <option value="EMPLEADO" selected>Empleado</option>
+            <option value="ADMIN">Administrador</option>
+          </select>
+
+          <div id="registerStatus" class="status-line"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="ghost" onclick="closeRegisterModal()">Cancelar</button>
+          <button type="submit" class="primary">Crear usuario</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <script src="js/auth.js"></script>

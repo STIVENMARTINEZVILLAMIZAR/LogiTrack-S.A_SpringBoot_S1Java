@@ -6,6 +6,29 @@ const outputs = {
   audit: document.getElementById('outAudit')
 };
 
+function parseJwt(raw) {
+  try {
+    const payload = raw.split('.')[1];
+    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+    return JSON.parse(json);
+  } catch (e) {
+    return null;
+  }
+}
+
+function applyRoleVisibility(roles) {
+  const auditTab = document.querySelector('[data-tab="auditoria"]');
+  const auditSection = document.getElementById('auditoria');
+  const isAdmin = roles.includes('ADMIN');
+  if (!isAdmin) {
+    auditTab.style.display = 'none';
+    auditSection.classList.remove('active');
+    if (document.querySelector('.nav-item.active')?.dataset?.tab === 'auditoria') {
+      switchTab('bodegas');
+    }
+  }
+}
+
 function formatValue(value) {
   if (value === null || value === undefined) return '-';
   if (typeof value === 'boolean') return value ? 'Sí' : 'No';
@@ -95,10 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
   baseUrl = localStorage.getItem('baseUrl') || 'http://localhost:8080';
   if (!token) return (window.location = 'login.html');
 
+  const payload = parseJwt(token);
+  const roles = Array.isArray(payload?.roles) ? payload.roles : [];
+
   document.getElementById('baseUrl').value = baseUrl;
   document.getElementById('tokenStatus').textContent =
     `Sesión: ${localStorage.getItem('username') || 'usuario'}`;
-  document.getElementById('userLabel').textContent = localStorage.getItem('username') || '-';
+  document.getElementById('userLabel').textContent =
+    `${localStorage.getItem('username') || '-'}${roles.length ? ' (' + roles.join(', ') + ')' : ''}`;
+  applyRoleVisibility(roles);
 
   filtrarBodegas();
 });
@@ -162,7 +190,10 @@ async function filtrarStockBajo() {
 async function filtrarMovimientos() {
   const d = document.getElementById('movDesde').value;
   const h = document.getElementById('movHasta').value;
-  const query = (d || h) ? `?desde=${d || ''}&hasta=${h || ''}` : '';
+  const params = new URLSearchParams();
+  if (d) params.append('desde', new Date(`${d}T00:00:00Z`).toISOString());
+  if (h) params.append('hasta', new Date(`${h}T23:59:59Z`).toISOString());
+  const query = params.toString() ? `?${params.toString()}` : '';
   try {
     const data = await fetchJson(`/movimientos${query}`);
     render(outputs.mov, data);

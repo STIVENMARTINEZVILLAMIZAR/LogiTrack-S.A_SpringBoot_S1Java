@@ -18,10 +18,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombres", nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @Column(name = "apellidos", nullable = false, length = 100)
+    @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
 
     @Column(nullable = false, unique = true, length = 80)
