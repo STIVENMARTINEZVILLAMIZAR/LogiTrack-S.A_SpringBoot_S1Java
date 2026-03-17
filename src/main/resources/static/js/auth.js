@@ -4,12 +4,41 @@ const registerModal = document.getElementById('registerModal');
 const registerForm = document.getElementById('registerForm');
 const registerStatusEl = document.getElementById('registerStatus');
 const registerSubmitBtn = registerForm?.querySelector('button[type="submit"]');
+const registerRoleSelect = document.getElementById('regRol');
+const roleNote = document.getElementById('roleNote');
+const loginRoleEl = document.getElementById('loginRole');
 
 document.addEventListener('DOMContentLoaded', () => {
-  const savedBase = localStorage.getItem('baseUrl') || 'http://localhost:8080';
+  const origin = window.location.origin;
+  const savedBase = localStorage.getItem('baseUrl') || defaultBaseUrl();
   baseInput.value = savedBase;
+  if (origin && origin !== 'null') {
+    baseInput.value = origin;
+    baseInput.readOnly = true;
+    localStorage.setItem('baseUrl', origin);
+  }
   document.getElementById('username').focus();
+  applyLoginRoleHint();
 });
+
+function defaultBaseUrl() {
+  const origin = window.location.origin;
+  if (origin && origin !== 'null') return origin;
+  return 'http://localhost:8087';
+}
+
+function applyLoginRoleHint() {
+  if (!loginRoleEl) return;
+  const params = new URLSearchParams(window.location.search);
+  const role = params.get('role');
+  if (role === 'ADMIN') {
+    loginRoleEl.textContent = 'Modo: Administrador';
+  } else if (role === 'EMPLEADO') {
+    loginRoleEl.textContent = 'Modo: Empleado';
+  } else {
+    loginRoleEl.textContent = 'Modo: Acceso general';
+  }
+}
 
 function setStatus(msg, ok = false) {
   statusEl.textContent = msg;
@@ -20,6 +49,31 @@ function setRegisterStatus(msg, ok = false) {
   if (!registerStatusEl) return;
   registerStatusEl.textContent = msg;
   registerStatusEl.style.color = ok ? '#2ad1ff' : '#f87171';
+}
+
+function parseJwt(raw) {
+  try {
+    const payload = raw.split('.')[1];
+    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+    return JSON.parse(json);
+  } catch (e) {
+    return null;
+  }
+}
+
+function updateRoleControl() {
+  if (!registerRoleSelect || !roleNote) return;
+  const token = localStorage.getItem('token');
+  const roles = Array.isArray(parseJwt(token)?.roles) ? parseJwt(token).roles : [];
+  const isAdmin = roles.includes('ADMIN');
+  if (isAdmin) {
+    registerRoleSelect.disabled = false;
+    roleNote.textContent = '';
+  } else {
+    registerRoleSelect.value = 'EMPLEADO';
+    registerRoleSelect.disabled = true;
+    roleNote.textContent = 'Solo un administrador puede asignar rol.';
+  }
 }
 
 async function readError(res) {
@@ -58,6 +112,7 @@ function openRegisterModal() {
   document.getElementById('regUsername').value = username;
   document.getElementById('regPassword').value = password;
   setRegisterStatus('');
+  updateRoleControl();
   registerModal.classList.add('open');
   registerModal.setAttribute('aria-hidden', 'false');
   document.getElementById('regNombre').focus();

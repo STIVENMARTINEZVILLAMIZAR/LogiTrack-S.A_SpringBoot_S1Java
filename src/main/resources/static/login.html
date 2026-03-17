@@ -13,11 +13,12 @@
       <div>
         <h2 class="auth-title">LogiTrack</h2>
         <p class="auth-subtitle">Accede con tu usuario o registra un empleado.</p>
+        <div id="loginRole" class="pill subtle" style="margin-top: 8px;">Modo: Acceso general</div>
       </div>
     </div>
 
     <label for="baseUrl">Base URL</label>
-    <input id="baseUrl" type="text" value="http://localhost:8083" autocomplete="off"/>
+    <input id="baseUrl" type="text" placeholder="http://localhost:8080" autocomplete="off"/>
 
     <label for="username">Usuario</label>
     <input id="username" type="text" autocomplete="username"/>
@@ -27,10 +28,10 @@
 
     <div class="row">
       <button class="primary" onclick="login()">Login</button>
-      <button class="ghost" onclick="openRegisterModal()">Registrar</button>
     </div>
 
     <p class="muted">El token queda guardado en el navegador.</p>
+    <p class="muted">Registro solo disponible para administradores desde el panel.</p>
     <div id="authStatus" class="status-line"></div>
   </div>
 
@@ -67,6 +68,7 @@
             <option value="EMPLEADO" selected>Empleado</option>
             <option value="ADMIN">Administrador</option>
           </select>
+          <div id="roleNote" class="helper-text"></div>
 
           <div id="registerStatus" class="status-line"></div>
         </div>

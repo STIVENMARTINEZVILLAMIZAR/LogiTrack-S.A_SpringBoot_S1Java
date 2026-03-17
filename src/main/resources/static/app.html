@@ -21,6 +21,7 @@
         <button class="nav-item" data-tab="productos" onclick="switchTab('productos')">Productos</button>
         <button class="nav-item" data-tab="movimientos" onclick="switchTab('movimientos')">Movimientos</button>
         <button class="nav-item" data-tab="auditoria" onclick="switchTab('auditoria')">Auditoría</button>
+        <button class="nav-item" data-tab="usuarios" onclick="switchTab('usuarios')">Usuarios</button>
       </nav>
       <div class="sidebar-footer">
         <div class="pill" id="tokenStatus">Sesión</div>
@@ -32,7 +33,7 @@
       <header class="topbar">
         <div class="topbar-left">
           <label class="label-inline">Base URL</label>
-          <input id="baseUrl" class="input-inline" value="http://localhost:8080" onchange="guardarBaseUrl()"/>
+          <input id="baseUrl" class="input-inline" placeholder="http://localhost:8087" onchange="guardarBaseUrl()"/>
         </div>
         <div class="topbar-right">
           <span class="muted">Usuario:</span>
@@ -93,6 +94,50 @@
               </div>
             </div>
             <div id="outAudit" class="output"></div>
+          </div>
+        </div>
+
+        <div id="usuarios" class="tab-content">
+          <div class="card card-flat">
+            <div class="card-header">
+              <h3>Usuarios</h3>
+            </div>
+            <div class="card-content">
+              <div class="form-grid">
+                <div>
+                  <label for="userNombre">Nombres</label>
+                  <input id="userNombre" type="text" />
+                </div>
+                <div>
+                  <label for="userApellido">Apellidos</label>
+                  <input id="userApellido" type="text" />
+                </div>
+                <div>
+                  <label for="userEmail">Email</label>
+                  <input id="userEmail" type="email" />
+                </div>
+                <div>
+                  <label for="userUsername">Usuario</label>
+                  <input id="userUsername" type="text" />
+                </div>
+                <div>
+                  <label for="userPassword">Contraseña</label>
+                  <input id="userPassword" type="password" />
+                </div>
+                <div>
+                  <label for="userRol">Rol</label>
+                  <select id="userRol">
+                    <option value="EMPLEADO" selected>Empleado</option>
+                    <option value="ADMIN">Administrador</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <button class="primary" onclick="crearUsuario()">Crear usuario</button>
+                <button class="ghost" onclick="limpiarUsuarioForm()">Limpiar</button>
+              </div>
+              <div id="userStatus" class="status-line"></div>
+            </div>
           </div>
         </div>
       </section>

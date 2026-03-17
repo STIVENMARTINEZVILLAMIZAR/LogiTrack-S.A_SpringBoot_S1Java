@@ -195,6 +195,17 @@ body {
     padding: 16px;
 }
 
+.card-content {
+    padding: 16px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -301,6 +312,75 @@ pre {
     background: var(--bg);
 }
 
+.welcome-body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.12), transparent 40%),
+      radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.12), transparent 45%),
+      var(--bg);
+}
+
+.welcome-card {
+    width: min(620px, 92vw);
+    background: var(--panel);
+    border-radius: 18px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    animation: fadeUp 400ms ease;
+}
+
+.welcome-badge {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.welcome-badge h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+}
+
+.welcome-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.welcome-actions a {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-note {
+    margin-top: 16px;
+}
+
+.pill.subtle {
+    background: rgba(148, 163, 184, 0.12);
+    color: var(--muted);
+}
+
+.float {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .auth-card {
     width: 360px;
     background: var(--panel);
@@ -357,6 +437,12 @@ pre {
 .status-line {
     margin-top: 10px;
     font-size: 0.95rem;
+}
+
+.helper-text {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
 }
 
 .modal {

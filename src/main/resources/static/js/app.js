@@ -5,6 +5,7 @@ const outputs = {
   mov: document.getElementById('outMov'),
   audit: document.getElementById('outAudit')
 };
+const userStatusEl = document.getElementById('userStatus');
 
 function parseJwt(raw) {
   try {
@@ -19,10 +20,14 @@ function parseJwt(raw) {
 function applyRoleVisibility(roles) {
   const auditTab = document.querySelector('[data-tab="auditoria"]');
   const auditSection = document.getElementById('auditoria');
+  const usersTab = document.querySelector('[data-tab="usuarios"]');
+  const usersSection = document.getElementById('usuarios');
   const isAdmin = roles.includes('ADMIN');
   if (!isAdmin) {
     auditTab.style.display = 'none';
     auditSection.classList.remove('active');
+    if (usersTab) usersTab.style.display = 'none';
+    if (usersSection) usersSection.classList.remove('active');
     if (document.querySelector('.nav-item.active')?.dataset?.tab === 'auditoria') {
       switchTab('bodegas');
     }
@@ -113,9 +118,19 @@ function render(el, data) {
   }
 }
 
+function setUserStatus(msg, ok = false) {
+  if (!userStatusEl) return;
+  userStatusEl.textContent = msg;
+  userStatusEl.style.color = ok ? '#2ad1ff' : '#f87171';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   token = localStorage.getItem('token');
-  baseUrl = localStorage.getItem('baseUrl') || 'http://localhost:8080';
+  const origin = window.location.origin;
+  baseUrl = (origin && origin !== 'null') ? origin : (localStorage.getItem('baseUrl') || defaultBaseUrl());
+  if (origin && origin !== 'null') {
+    localStorage.setItem('baseUrl', origin);
+  }
   if (!token) return (window.location = 'login.html');
 
   const payload = parseJwt(token);
@@ -130,6 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filtrarBodegas();
 });
+
+function defaultBaseUrl() {
+  const origin = window.location.origin;
+  if (origin && origin !== 'null') return origin;
+  return 'http://localhost:8087';
+}
 
 function guardarBaseUrl() {
   baseUrl = document.getElementById('baseUrl').value.trim();
@@ -158,6 +179,42 @@ async function fetchJson(path, options = {}) {
   if (res.status === 401 || res.status === 403) return logout();
   if (!res.ok) throw new Error(await res.text());
   return res.json();
+}
+
+function limpiarUsuarioForm() {
+  const ids = ['userNombre', 'userApellido', 'userEmail', 'userUsername', 'userPassword'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const rol = document.getElementById('userRol');
+  if (rol) rol.value = 'EMPLEADO';
+  setUserStatus('');
+}
+
+async function crearUsuario() {
+  const nombre = document.getElementById('userNombre')?.value.trim();
+  const apellido = document.getElementById('userApellido')?.value.trim();
+  const email = document.getElementById('userEmail')?.value.trim();
+  const username = document.getElementById('userUsername')?.value.trim();
+  const password = document.getElementById('userPassword')?.value;
+  const rol = document.getElementById('userRol')?.value || 'EMPLEADO';
+
+  if (!nombre || !apellido || !email || !username || !password) {
+    return setUserStatus('Todos los campos son obligatorios');
+  }
+
+  try {
+    setUserStatus('Creando usuario...', true);
+    await fetchJson('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ nombre, apellido, email, username, password, rol })
+    });
+    setUserStatus('Usuario creado correctamente.', true);
+    limpiarUsuarioForm();
+  } catch (e) {
+    setUserStatus(`Registro falló: ${e.message}`);
+  }
 }
 
 async function filtrarBodegas() {

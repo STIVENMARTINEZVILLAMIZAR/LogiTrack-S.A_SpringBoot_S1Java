@@ -44,3 +44,11 @@ Spring Security + JWT (HS256). Se permiten sin token: `/auth/**`, `/swagger-ui/*
 - `controller/` REST.
 - `security/` JWT, filtros y configuración.
 - `src/main/resources/schema.sql` y `data.sql` para inicializar.
+
+## Ejecución
+```bash
+mvn clean compile
+mvn spring-boot:run
+```
+Swagger UI: `http://localhost:8080/swagger-ui.html`  
+OpenAPI JSON: `http://localhost:8080/v3/api-docs`

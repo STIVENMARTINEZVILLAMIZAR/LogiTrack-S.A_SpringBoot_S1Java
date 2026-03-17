@@ -30,6 +30,7 @@ public class Auditoria {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
+    @Builder.Default
     @Column(nullable = false)
     private Instant fecha = Instant.now();
 
