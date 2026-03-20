@@ -21,6 +21,11 @@ public class Usuario {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    // Columna heredada en algunas bases de datos antiguas.
+    // La rellenamos automáticamente para evitar fallos por NOT NULL.
+    @Column(name = "nombres")
+    private String nombres;
+
     @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
 
@@ -62,10 +67,19 @@ public class Usuario {
         Instant now = Instant.now();
         createdAt = now;
         updatedAt = now;
+
+        // Sincroniza columna legacy si existe en la BD
+        if (nombres == null) {
+            nombres = nombre;
+        }
     }
 
     @PreUpdate
     public void preUpdate() {
         updatedAt = Instant.now();
+
+        if (nombres == null) {
+            nombres = nombre;
+        }
     }
 }

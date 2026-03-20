@@ -1,20 +1,28 @@
 package com.logitrack.controller;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.logitrack.dto.MovimientoDTO;
 import com.logitrack.dto.MovimientoRequest;
 import com.logitrack.model.Movimiento;
 import com.logitrack.model.StockBodega;
 import com.logitrack.repository.StockBodegaRepository;
 import com.logitrack.service.MovimientoService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/movimientos")
@@ -37,6 +45,11 @@ public class MovimientoController {
         return movimientoService.listar(desde, hasta, tipo);
     }
 
+    @GetMapping("/recientes")
+    public ResponseEntity<List<MovimientoDTO>> listarRecientes() {
+        return ResponseEntity.ok(movimientoService.listarRecientes());
+    }
+
     @GetMapping("/resumen")
     public Map<String, Double> resumenStockPorBodega() {
         List<StockBodega> stock = stockBodegaRepository.findAll();
@@ -46,3 +59,5 @@ public class MovimientoController {
         ));
     }
 }
+
+@GetMapping("/")

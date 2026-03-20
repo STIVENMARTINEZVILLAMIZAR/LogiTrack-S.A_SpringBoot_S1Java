@@ -671,9 +671,9 @@ body[data-role="EMPLEADO"] {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background: transparent;
-    padding: 60px 20px 20px;
+    padding: 60px 20px 40px;
     position: relative;
     z-index: 2;
 }
@@ -715,7 +715,7 @@ body[data-role="EMPLEADO"] {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
+}   
 
 .hero-copy {
     color: rgba(255, 255, 255, 0.85);
@@ -815,7 +815,7 @@ body[data-role="EMPLEADO"] {
     border-radius: 16px;
     border: 1px solid rgba(100, 181, 246, 0.4);
     margin-top: 12px;
-    background: rgba(13, 71, 161, 0.4);
+    background: rgb(255, 255, 255);
     backdrop-filter: blur(10px);
 }
 
@@ -1241,19 +1241,41 @@ code {
 
 footer {
     width: 100%;
-    padding: 20px;
+    margin-top: auto;
+    padding: 18px 0 10px;
+    display: flex;
+    justify-content: center;
     text-align: center;
-    background: rgba(13, 71, 161, 0.5);
-    border-top: 1px solid rgba(100, 181, 246, 0.2);
+    background: linear-gradient(120deg, rgb(250, 251, 252), rgba(22, 80, 150, 0.75));
+    border-top: 1px solid rgba(100, 181, 246, 0.25);
+    box-shadow: 0 -8px 45px rgba(10, 30, 60, 0.18);
     backdrop-filter: blur(10px);
     position: relative;
     z-index: 3;
+    bottom:20px;
+
 }
 
 .footer-content {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 13px;
+    width: min(1180px, 92%);
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: rgba(4, 4, 4, 0.9);
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+
+}
+
+.footer-content::before,
+.footer-content::after {
+    content: "";
+    width: 38px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(144, 202, 249, 0.6), transparent);
+    display: inline-block;
 }
 
 .footer-content p {

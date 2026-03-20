@@ -14,4 +14,8 @@ public interface MovimientoRepository extends JpaRepository<Movimiento, Long> {
 
     @Query("select m from Movimiento m where (:tipo is null or m.tipo = :tipo) and (:desde is null or m.fecha >= :desde) and (:hasta is null or m.fecha <= :hasta)")
     List<Movimiento> search(@Param("tipo") MovimientoTipo tipo, @Param("desde") Instant desde, @Param("hasta") Instant hasta);
+
+    List<Movimiento> findTop10ByOrderByFechaDesc();
+
+    long countByTipo(MovimientoTipo tipo);
 }

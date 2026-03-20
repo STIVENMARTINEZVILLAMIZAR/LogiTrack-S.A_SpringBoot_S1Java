@@ -1,5 +1,7 @@
 package com.logitrack.service.impl;
 
+import com.logitrack.dto.MovimientoDTO;
+import com.logitrack.dto.MovimientoDetalleDTO;
 import com.logitrack.dto.MovimientoRequest;
 import com.logitrack.model.*;
 import com.logitrack.repository.*;
@@ -72,6 +74,15 @@ public class MovimientoServiceImpl implements MovimientoService {
         return movimientoRepository.search(tipoEnum, desde, hasta);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<MovimientoDTO> listarRecientes() {
+        return movimientoRepository.findTop10ByOrderByFechaDesc()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
     private Bodega requireBodega(Long id, String mensaje) {
         if (id == null) throw new IllegalArgumentException(mensaje);
         return bodegaRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Bodega no encontrada"));
@@ -110,6 +121,34 @@ public class MovimientoServiceImpl implements MovimientoService {
         }
         stock.setCantidad(nuevaCantidad);
         stockBodegaRepository.save(stock);
+    }
+
+    private MovimientoDTO toDTO(Movimiento movimiento) {
+        String bodegaOrigen = movimiento.getBodegaOrigen() != null ? movimiento.getBodegaOrigen().getNombre() : null;
+        String bodegaDestino = movimiento.getBodegaDestino() != null ? movimiento.getBodegaDestino().getNombre() : null;
+        String usuario = movimiento.getUsuario() != null ? movimiento.getUsuario().getUsername() : null;
+
+        List<MovimientoDetalleDTO> detalles = movimiento.getDetalles()
+                .stream()
+                .map(det -> new MovimientoDetalleDTO(
+                        det.getProducto() != null ? det.getProducto().getId() : null,
+                        det.getProducto() != null ? det.getProducto().getNombre() : null,
+                        det.getCantidad(),
+                        det.getPrecioUnitario()
+                ))
+                .toList();
+
+        return new MovimientoDTO(
+                movimiento.getId(),
+                movimiento.getFecha(),
+                movimiento.getTipo(),
+                bodegaOrigen,
+                bodegaDestino,
+                usuario,
+                movimiento.getComentario(),
+                movimiento.getReferencia(),
+                detalles
+        );
     }
 
     private Usuario currentUser() {
