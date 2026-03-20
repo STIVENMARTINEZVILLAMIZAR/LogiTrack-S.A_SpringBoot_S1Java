@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class StockBodega {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
